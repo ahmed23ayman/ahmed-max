@@ -1,133 +1,48 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ahmed Max - Movies</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ahmed Max - عالم الأفلام</title>
   <style>
     body {
-      background-color: #000;
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background-color: #111;
       color: #fff;
-      font-family: Tahoma, sans-serif;
+      background-image: url('https://i.imgur.com/2BdNlDT.jpg'); /* صورة شفافة أو فيها لمسة فنية */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.85);
       padding: 20px;
     }
-    h1 {
+    header {
       text-align: center;
-      color: #0ff;
+      padding: 20px 0;
+      font-size: 2rem;
+      color: #FFD700;
+      font-weight: bold;
+      text-shadow: 1px 1px 5px #000;
     }
-    .section-title {
-      color: #ff0;
-      margin-top: 40px;
-      border-bottom: 2px solid #444;
-      padding-bottom: 5px;
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+      padding: 20px;
     }
-    .movie-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .movie {
-      background: #111;
-      padding: 10px;
-      border: 1px solid #333;
-      border-radius: 10px;
+    .movie-card {
+      background-color: #222;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
       cursor: pointer;
-      flex: 1 1 calc(25% - 20px);
-      text-align: center;
-      transition: 0.3s;
     }
-    .movie:hover {
-      background: #222;
+    .movie-card:hover {
+      transform: scale(1.05);
     }
-    video {
+    .movie-card img {
       width: 100%;
-      height: 400px;
-      margin-top: 20px;
-      background: #000;
+      display: block;
     }
-    @media (max-width: 768px) {
-      .movie {
-        flex: 1 1 calc(50% - 20px);
-      }
-      video {
-        height: 250px;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <h1>🎬 Ahmed Max - مكتبة أفلام</h1>
-
-  <video id="videoPlayer" controls>
-    <source id="videoSource" src="" type="video/mp4">
-    متصفحك لا يدعم تشغيل الفيديو.
-  </video>
-
-  <h2 class="section-title">🧪 أفلام خيال علمي أجنبي</h2>
-  <div class="movie-list" id="sciFiList"></div>
-
-  <h2 class="section-title">🎥 أفلام مصرية حديثة</h2>
-  <div class="movie-list" id="egyptianList"></div>
-
-  <script>
-    const sciFiMovies = [
-      { title: "Interstellar", url: "https://archive.org/download/Interstellar_201904/Interstellar.mp4" },
-      { title: "Inception", url: "https://archive.org/download/InceptionMovie/Inception.mp4" },
-      { title: "The Matrix", url: "https://archive.org/download/TheMatrix1999_201903/TheMatrix1999.mp4" },
-      { title: "Tenet", url: "https://archive.org/download/tenet_202103/Tenet.mp4" },
-      { title: "Edge of Tomorrow", url: "https://archive.org/download/EdgeTomorrow/EdgeTomorrow.mp4" },
-      { title: "Gravity", url: "https://archive.org/download/Gravity_201312/Gravity.mp4" },
-      { title: "Arrival", url: "https://archive.org/download/arrival_202103/Arrival.mp4" },
-      { title: "Avatar", url: "https://archive.org/download/avatar_202102/Avatar.mp4" },
-      { title: "Oblivion", url: "https://archive.org/download/oblivion_202102/Oblivion.mp4" },
-      { title: "The Martian", url: "https://archive.org/download/TheMartian2015/TheMartian2015.mp4" },
-      { title: "Prometheus", url: "https://archive.org/download/prometheus_202103/Prometheus.mp4" },
-      { title: "Passengers", url: "https://archive.org/download/passengers_202103/Passengers.mp4" },
-      { title: "Dune", url: "https://archive.org/download/dune-2021/Dune2021.mp4" },
-      { title: "District 9", url: "https://archive.org/download/District9/District9.mp4" },
-      { title: "Looper", url: "https://archive.org/download/looper_202102/Looper.mp4" }
-    ];
-
-    const egyptianMovies = [
-      { title: "الفيل الأزرق", url: "https://ia801508.us.archive.org/2/items/film2023/elfil%20elazra2.mp4" },
-      { title: "الفيل الأزرق 2", url: "https://ia601406.us.archive.org/5/items/film2023/elfil%20elazra2%202.mp4" },
-      { title: "تراب الماس", url: "https://ia801507.us.archive.org/32/items/film2023/tarab%20elmas.mp4" },
-      { title: "العارف", url: "https://ia801508.us.archive.org/4/items/film2023/el3aref.mp4" },
-      { title: "كازابلانكا", url: "https://ia801508.us.archive.org/24/items/film2023/casablanca.mp4" },
-      { title: "الخلية", url: "https://ia801508.us.archive.org/5/items/film2023/el5alya.mp4" },
-      { title: "هروب اضطراري", url: "https://ia801508.us.archive.org/3/items/film2023/horob%20edterary.mp4" },
-      { title: "موسى", url: "https://ia801508.us.archive.org/0/items/film2023/mosa.mp4" },
-      { title: "الإنس والنمس", url: "https://ia801508.us.archive.org/4/items/film2023/elnems.mp4" },
-      { title: "حرب كرموز", url: "https://ia801508.us.archive.org/7/items/film2023/harb%20karmoz.mp4" },
-      { title: "جزيرة", url: "https://ia801508.us.archive.org/31/items/film2023/ElGazeera.mp4" },
-      { title: "ولاد رزق", url: "https://ia601406.us.archive.org/1/items/film2023/welad%20rezk.mp4" },
-      { title: "ولاد رزق 2", url: "https://ia601406.us.archive.org/2/items/film2023/welad%20rezk%202.mp4" },
-      { title: "عمهم", url: "https://ia601406.us.archive.org/3/items/film2023/3amohom.mp4" },
-      { title: "البدلة", url: "https://ia601406.us.archive.org/5/items/film2023/elbadla.mp4" }
-    ];
-
-    const video = document.getElementById("videoPlayer");
-    const source = document.getElementById("videoSource");
-
-    function loadMovies(list, containerId) {
-      const container = document.getElementById(containerId);
-      list.forEach(movie => {
-        const div = document.createElement("div");
-        div.className = "movie";
-        div.textContent = movie.title;
-        div.onclick = () => {
-          source.src = movie.url;
-          video.load();
-          video.play();
-        };
-        container.appendChild(div);
-      });
-    }
-
-    loadMovies(sciFiMovies, "sciFiList");
-    loadMovies(egyptianMovies, "egyptianList");
-  </script>
-
-</body>
-</html>
